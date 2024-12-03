@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cvrn7v41otfpc"]
+[gd_scene load_steps=22 format=3 uid="uid://cvrn7v41otfpc"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://cit7mpkhq5p08" path="res://BouncyMaterial.tres" id="1_6xfgw"]
 [ext_resource type="AudioStream" uid="uid://c8jr8qhiwnc0n" path="res://notas/316906__jaz_the_man_2__mi.wav" id="2_fwsnq"]
@@ -6,7 +6,11 @@
 [ext_resource type="AudioStream" uid="uid://dptkp6e4vej8m" path="res://notas/316907__jaz_the_man_2__mi-stretched.wav" id="4_0raoh"]
 [ext_resource type="AudioStream" uid="uid://jqly2dfilu3f" path="res://notas/316908__jaz_the_man_2__re.wav" id="5_gvdk0"]
 [ext_resource type="AudioStream" uid="uid://0yp6mya1ppj4" path="res://notas/316898__jaz_the_man_2__do.wav" id="6_j0kf3"]
+[ext_resource type="AudioStream" uid="uid://dwtic8mnb2imr" path="res://notas/316904__jaz_the_man_2__fa.wav" id="7_a0yk7"]
 [ext_resource type="Script" path="res://Camera3D.gd" id="7_mpd7h"]
+[ext_resource type="AudioStream" uid="uid://b8usn4tbnas01" path="res://notas/316913__jaz_the_man_2__si.wav" id="8_5cjmy"]
+[ext_resource type="Script" path="res://addons/vaporwavesky/vaporwave_sky_material.gd" id="10_rf1t2"]
+[ext_resource type="Shader" path="res://addons/vaporwavesky/vaporwave.gdshader" id="11_kmrxj"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8qnc7"]
 
@@ -22,9 +26,60 @@
 
 [sub_resource type="BoxMesh" id="BoxMesh_kh14l"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2ybnp"]
+shader = ExtResource("11_kmrxj")
+shader_parameter/sky_color = Color(0.1, 0.07, 0.2, 1)
+shader_parameter/sky_horizon_color = Color(0.56, 0.18, 0.42, 1)
+shader_parameter/sky_horizon_decay = 3.0
+shader_parameter/ground_color = Color(0, 0, 0, 1)
+shader_parameter/ground_horizon_color = Color(0.1, 0, 0.07, 1)
+shader_parameter/ground_horizon_decay = 1.0
+shader_parameter/stars_enabled = true
+shader_parameter/stars_below_horizon = false
+shader_parameter/star_color = Color(0.95, 0.9, 0.6, 1)
+shader_parameter/star_radius = 0.3
+shader_parameter/star_density = 5.0
+shader_parameter/star_randomness = 1.0
+shader_parameter/star_seed = Vector2(0, 0)
+shader_parameter/grid_enabled = true
+shader_parameter/grid_color = Color(0.18, 0.92, 0.74, 1)
+shader_parameter/grid_depth = 2.0
+shader_parameter/grid_spacing = 1.0
+shader_parameter/grid_thickness = 0.03
+shader_parameter/grid_max_distance = 25.0
+shader_parameter/grid_max_distance_fade = 0.3
+shader_parameter/grid_energy = 1.0
+shader_parameter/sun_radius = 10.0
+shader_parameter/sun_smoothing = 0.35
+shader_parameter/sun_glow_color = Color(0.96, 0.9, 0.35, 1)
+shader_parameter/sun_glow_radius = 30.0
+shader_parameter/sun_glow_intensity = 0.5
+shader_parameter/sun_gradient_enabled = true
+shader_parameter/sun_color_1 = Color(0.96, 0.9, 0.35, 1)
+shader_parameter/sun_color_2 = Color(0.96, 0.35, 0.9, 1)
+shader_parameter/sun_gradient_pos_frac = 0.6
+shader_parameter/sun_gradient_span_frac = 0.8
+shader_parameter/sun_banding_enabled = true
+shader_parameter/sun_banding_base_gap = 0.03
+shader_parameter/sun_banding_gap_mul = 1.1
+shader_parameter/sun_banding_stop_height = 0.7
+shader_parameter/sun_banding_thickness = 0.01
+script = ExtResource("10_rf1t2")
+
+[sub_resource type="Sky" id="Sky_ehl48"]
+sky_material = SubResource("ShaderMaterial_2ybnp")
+
+[sub_resource type="Environment" id="Environment_p77s1"]
+background_mode = 2
+sky = SubResource("Sky_ehl48")
+sky_custom_fov = 98.7
+fog_light_energy = 0.48
+fog_sky_affect = 0.374
+
 [node name="Node3D" type="Node3D"]
 
 [node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(25, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
 transform = Transform3D(10, 0, 0, 0, 0.5, 0, 0, 0, 10, 0, 0, 0)
@@ -65,7 +120,14 @@ stream = ExtResource("5_gvdk0")
 [node name="Do" type="AudioStreamPlayer" parent="RigidBody3D/Area3D"]
 stream = ExtResource("6_j0kf3")
 
+[node name="Fa" type="AudioStreamPlayer" parent="RigidBody3D/Area3D" groups=["fa"]]
+stream = ExtResource("7_a0yk7")
+
+[node name="Si" type="AudioStreamPlayer" parent="RigidBody3D/Area3D" groups=["si"]]
+stream = ExtResource("8_5cjmy")
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.952129, 0, -0.305695, 0, 1, 0, 0.305695, 0, 0.952129, 0, 0, 0)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." groups=["mi_longo"]]
 transform = Transform3D(0.559193, -0.829038, 0, 0.829038, 0.559193, 0, 0, 0, 1, 3, 31.8066, 0)
@@ -142,14 +204,80 @@ mesh = SubResource("BoxMesh_kh14l")
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1.46, 22.9, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D8"]
-transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 1, 0, -0.461202, 0)
 shape = SubResource("BoxShape3D_oruyb")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D8/CollisionShape3D"]
 mesh = SubResource("BoxMesh_kh14l")
 
+[node name="StaticBody3D9" type="StaticBody3D" parent="." groups=["mi_curto"]]
+transform = Transform3D(0.173648, -0.984808, 0, 0.984808, 0.173648, 0, 0, 0, 1, 4.33509, 21.7529, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D9"]
+transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 1, 0, -0.461202, 0)
+shape = SubResource("BoxShape3D_oruyb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D9/CollisionShape3D"]
+mesh = SubResource("BoxMesh_kh14l")
+
+[node name="StaticBody3D10" type="StaticBody3D" parent="." groups=["fa"]]
+transform = Transform3D(0.151261, 0.988494, 0, -0.988494, 0.151261, 0, 0, 0, 1, 3.12411, 21.2833, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D10"]
+transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 1, 0.227619, -1.53286, 0)
+shape = SubResource("BoxShape3D_oruyb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D10/CollisionShape3D"]
+mesh = SubResource("BoxMesh_kh14l")
+
+[node name="StaticBody3D11" type="StaticBody3D" parent="." groups=["mi_curto"]]
+transform = Transform3D(0.0871558, -0.996195, 0, 0.996195, 0.0871558, 0, 0, 0, 1, 3.08668, 19.8091, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D11"]
+transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 1, 0.227619, -1.53286, 0)
+shape = SubResource("BoxShape3D_oruyb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D11/CollisionShape3D"]
+mesh = SubResource("BoxMesh_kh14l")
+
+[node name="StaticBody3D12" type="StaticBody3D" parent="." groups=["re"]]
+transform = Transform3D(0.152986, 0.988228, 0, -0.988228, 0.152986, 0, 0, 0, 1, 3.58154, 19.4072, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D12"]
+transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 1, 0.227619, -1.53286, 0)
+shape = SubResource("BoxShape3D_oruyb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D12/CollisionShape3D"]
+mesh = SubResource("BoxMesh_kh14l")
+
+[node name="StaticBody3D13" type="StaticBody3D" parent="." groups=["do"]]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 2.95022, 17.4879, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D13"]
+transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 1, 0.227619, -1.53286, 0)
+shape = SubResource("BoxShape3D_oruyb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D13/CollisionShape3D"]
+mesh = SubResource("BoxMesh_kh14l")
+
+[node name="StaticBody3D14" type="StaticBody3D" parent="." groups=["re"]]
+transform = Transform3D(0.101056, 0.994881, 0, -0.994881, 0.101056, 0, 0, 0, 1, 3.93426, 17.6162, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D14"]
+transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 1, 0.227619, -1.53286, 0)
+shape = SubResource("BoxShape3D_oruyb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D14/CollisionShape3D"]
+mesh = SubResource("BoxMesh_kh14l")
+
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.3294, 10)
+transform = Transform3D(-0.999945, -0.00636031, -0.00831894, -0.00599288, 0.999037, -0.0434699, 0.00858741, -0.0434177, -0.99902, 0.975, 28.4483, -8.757)
 script = ExtResource("7_mpd7h")
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-1, 1.21669e-08, -8.6572e-08, 0, 0.990268, 0.139173, 8.74228e-08, 0.139173, -0.990268, 0, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_p77s1")
 
 [connection signal="body_entered" from="RigidBody3D/Area3D" to="RigidBody3D/Area3D" method="_on_body_entered"]
