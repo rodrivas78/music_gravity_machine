@@ -6,18 +6,22 @@ Project created to simulate a gravity-powered musical machine, aimed at testing 
 Parâmetros interessantes para a experiência:
 
 -------- Terra (velocidade normal) -----  
+
 Gravidade:  9.8 m/s
 Altura da esfera:  35.807 a 36.307
 
 -----  Lua  --------
+
 Aceleração da gravidade: 1.625 m/s
 Altura Y da bola para gravidade lunar:   37m
 
 ------- Marte -----
+
 G:  3.711
 A: 36.107
 
 ----- Netuno -----
+
 G: 11.15 
 A: 36.107
 
